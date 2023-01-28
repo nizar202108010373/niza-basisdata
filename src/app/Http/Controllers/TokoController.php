@@ -88,14 +88,14 @@ class TokoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $koneksi = DB::connection("mysql")->table("toko")->find($id);
-        if ($koneksi == NULL){
-            return response()->json("data pada id = $id, tidak ada!",404);
-        }else{
+        $query = DB::connection("mysql")->table("toko")->find($id);
+        if ($query == NULL) {
+            return response()->json("data yg mau diupdate kosong!", 404);
+        } else {
             $timestamp = \Carbon\Carbon::now()->toDateTimeString();
-            $koneksi = DB::connection("mysql")->table("toko")->where("id",$id)->update($request->all());
             $request["updated_at"] = $timestamp;
-            return response()->json("data pada id = $id, berhasil di update!",200);
+            $query = DB::connection("mysql")->table("toko")->where("id", $id)->update($request->all());
+            return response()->json("data berhasil diubah!", 200);
         }
     }
 
